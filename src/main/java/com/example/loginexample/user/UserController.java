@@ -1,6 +1,7 @@
 package com.example.loginexample.user;
 
 
+import com.example.loginexample._core.ex.Exception401;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,7 @@ public class UserController {
     public String updateForm() {
         // 인증로직
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        if (sessionUser == null) throw new Exception401("인증이 필요합니다.");
 
         return "user/update-form";
     }
@@ -51,7 +52,7 @@ public class UserController {
     public String update(UserRequest.UpdateDTO updateDTO) {
         // 인증로직
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        if (sessionUser == null) throw new Exception401("인증이 필요합니다.");
         userService.회원정보수정(updateDTO,sessionUser.getId());
         return "redirect:/";
 
