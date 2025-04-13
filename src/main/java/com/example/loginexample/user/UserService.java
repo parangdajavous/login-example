@@ -21,4 +21,21 @@ public class UserService {
         // 3. 없으면 회원가입하기
         userRepository.save(joinDTO.getUsername(), joinDTO.getPassword(), joinDTO.getEmail());
     }
+
+    public User 로그인(UserRequest.LoginDTO loginDTO) {
+        // 1. 해당 username이 있는지
+        User user = userRepository.findByUsername(loginDTO.getUsername());
+
+        // 2. username, password가 불일치하는 것들을 Filtering
+        if (user == null) {
+            throw new RuntimeException("해당 username이 없습니다.");
+        }
+
+        if (!(user.getPassword().equals(loginDTO.getPassword()))) {
+            throw new RuntimeException("해당 password가 틀렸습니다.");
+        }
+
+        // 3. 인증
+        return user;
+    }
 }
