@@ -38,4 +38,24 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("/user/update-form")
+    public String updateForm() {
+        // 인증로직
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+
+        return "user/update-form";
+    }
+
+    @PostMapping("/user/update")
+    public String update(UserRequest.UpdateDTO updateDTO) {
+        // 인증로직
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        userService.회원정보수정(updateDTO,sessionUser.getId());
+        return "redirect:/";
+
+    }
+
+
 }

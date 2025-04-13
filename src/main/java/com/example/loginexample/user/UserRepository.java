@@ -27,4 +27,23 @@ public class UserRepository {
         query.setParameter(3, email);
         query.executeUpdate();
     }
+
+    public void update(String password, String email,Integer id) {
+        Query query = em.createNativeQuery("update user_tb set password = ?, email = ? where id = ?");
+        query.setParameter(1,password);
+        query.setParameter(2,email);
+        query.setParameter(3,id);
+        query.executeUpdate();
+
+    }
+
+    public User findById(Integer id) {
+        Query query = em.createNativeQuery("select * from user_tb where id = ?", User.class);
+        query.setParameter(1, id);
+        try {
+            return (User) query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

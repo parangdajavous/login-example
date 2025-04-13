@@ -38,4 +38,12 @@ public class UserService {
         // 3. 인증
         return user;
     }
+
+    @Transactional
+    public void 회원정보수정(UserRequest.UpdateDTO updateDTO, Integer id) {
+        User user = userRepository.findById(id);
+        if (user == null) throw new RuntimeException("회원을 찾을 수 없습니다");
+
+        userRepository.update(updateDTO.getPassword(),updateDTO.getEmail(),id);
+    }
 }

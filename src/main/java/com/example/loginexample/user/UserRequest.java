@@ -17,4 +17,10 @@ public class UserRequest {
         public String username;
         public String password;
     }
+
+    @Data
+    public static class UpdateDTO {
+        private String password;
+        private String email;
+    }
 }
