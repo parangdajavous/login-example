@@ -1,6 +1,7 @@
 package com.example.loginexample.user;
 
 
+import com.example.loginexample._core.Sha;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,9 @@ public class UserService {
         if (user != null) throw new RuntimeException("동일한 username이 존재합니다.");
 
         // 3. 없으면 회원가입하기
-        userRepository.save(joinDTO.getUsername(), joinDTO.getPassword(), joinDTO.getEmail());
+        String encPassword = Sha.encode(joinDTO.getPassword());
+        joinDTO.setPassword(encPassword);
+        userRepository.save(joinDTO.getUsername(), encPassword, joinDTO.getEmail());
     }
 
     public User 로그인(UserRequest.LoginDTO loginDTO) {
@@ -31,7 +34,8 @@ public class UserService {
             throw new RuntimeException("해당 username이 없습니다.");
         }
 
-        if (!(user.getPassword().equals(loginDTO.getPassword()))) {
+        String encPassword = Sha.encode(loginDTO.getPassword());
+        if (!(user.getPassword().equals(encPassword))) {
             throw new RuntimeException("해당 password가 틀렸습니다.");
         }
 
@@ -44,6 +48,8 @@ public class UserService {
         User user = userRepository.findById(id);
         if (user == null) throw new RuntimeException("회원을 찾을 수 없습니다");
 
-        userRepository.update(updateDTO.getPassword(),updateDTO.getEmail(),id);
+        String encPassword = Sha.encode(updateDTO.getPassword());
+        updateDTO.setPassword(encPassword);
+        userRepository.update(encPassword, updateDTO.getEmail(), id);
     }
 }

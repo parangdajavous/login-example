@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -41,7 +40,6 @@ public class UserController {
 
     @GetMapping("/user/update-form")
     public String updateForm() {
-        // 인증로직
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("인증이 필요합니다.");
 
@@ -53,7 +51,7 @@ public class UserController {
         // 인증로직
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("인증이 필요합니다.");
-        userService.회원정보수정(updateDTO,sessionUser.getId());
+        userService.회원정보수정(updateDTO, sessionUser.getId());
         return "redirect:/";
 
     }
